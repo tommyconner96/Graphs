@@ -37,6 +37,7 @@ class Graph:
                 # Add all neighbors to the queue
                 for neighbor in self.get_neighbors(current_vertex):
                     queue.append(neighbor)
+        
             
 
     def dft(self, starting_vertex_id):
@@ -124,3 +125,4 @@ our_graph.add_edge(7,1)
 print(our_graph.vertices)
 # our_graph.dft(1)
 print(our_graph.bfs(1, 3))
+print(our_graph.dft(1))

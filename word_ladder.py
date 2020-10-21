@@ -25,6 +25,7 @@ beginWord = "hungry"
 endWord = "happy"
 None
 """
+import string
 
 f = open('words.txt', 'r')
 words = f.read().split("\n")
@@ -33,7 +34,13 @@ all_words = set()
 for word in words:
     all_words.add(word.lower())
 
-letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+alphabet_string = string.ascii_lowercase
+
+
+letters = list(alphabet_string)
+print(letters)
+
+# letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
 def get_neighbors(current_word):
     # should return a list of neighbors
