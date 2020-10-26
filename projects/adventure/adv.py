@@ -7,22 +7,6 @@ from ast import literal_eval
 
 # Load world
 world = World()
-# NOTE delete if not used may need later:
-# BFS uses queue - FIFO
-class Queue():
-    def __init__(self):
-        self.queue = []
-    def enqueue(self, value):
-        self.queue.append(value)
-    def dequeue(self):
-        if self.size() > 0:
-            return self.queue.pop(0)
-        else:
-            return None
-            
-    def size(self):
-        return len(self.queue)
-
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
@@ -70,6 +54,7 @@ while len(visited) < 500:
     room_id = player.current_room.id
     exits = player.current_room.get_exits()
     moves = []
+    # moves = Queue()
     print(f"room: {room_id}, exits: {exits}")
     print(len(visited))
     for exit_option in exits:
