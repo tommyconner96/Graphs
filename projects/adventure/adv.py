@@ -5,6 +5,19 @@ from world import World
 import random
 from ast import literal_eval
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 # Load world
 world = World()
 
@@ -35,22 +48,27 @@ visited = set()
 # traversal_done = False
 player_room_graph = {}
 
-def add_room(room_id, exit_options, last_room_direction, last_room):
+def add_room(room_id, last_room_direction=None, last_room=None):
+    exit_options = player.current_room.get_exits()
     player_room_graph[room_id] = {}
     for option in exit_options:
         if option != last_room_direction:
+            # if it isnt the room we came from, it's unknown
             player_room_graph[room_id][option] = "?"
         else:
+            # if it is the room we came from, set it as so.
             player_room_graph[room_id][option] = last_room
+        # if room_id not in visited:
+        #     visited.add(room_id)
 
-# add room to graph
-add_room(player.current_room.id, player.current_room.get_exits(), None, None)
+
+add_room(player.current_room.id)
 
 # traversal loop willl continue until all rooms have been visited and traversal_done is marked True
 # while traversal_done is not True:
 # UPDATE: we can just check it this way, no need for the boolean
 # this also saves 14 moves
-while len(visited) < 500:
+while len(visited) < len(world.rooms):
     room_id = player.current_room.id
     exits = player.current_room.get_exits()
     moves = []
@@ -79,8 +97,8 @@ while len(visited) < 500:
             # and are back at the starting room
             # so lets end the while loop
             # traversal_done = True
-            print(visited)
-            break
+            # print(visited)
+            pass
 
     else:
         # the next move in queue
@@ -98,7 +116,10 @@ while len(visited) < 500:
         # if we haven't been here before lets add it to visited Set
         if new_room not in visited:
             visited.add(new_room)
-            add_room(new_room, player.current_room.get_exits(), opposite_directions[move], room_id)
+            # passing in the opposite direction, and the current room id to add_room
+            # so that we know it is not a ? when we run the add_room function this time
+            # and it will be added to our graph
+            add_room(new_room, opposite_directions[move], room_id)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -111,6 +132,8 @@ for move in traversal_path:
     visited_rooms.add(player.current_room)
 
 if len(visited_rooms) == len(room_graph):
+    print(len(player_room_graph))
+    # print(player_room_graph.keys(), player_room_graph.values())
     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
