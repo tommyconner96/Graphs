@@ -71,15 +71,16 @@ add_room(player.current_room.id)
 while len(visited) < len(world.rooms):
     room_id = player.current_room.id
     exits = player.current_room.get_exits()
-    moves = []
-    # moves = Queue()
+    # moves = []
+    q = Queue()
+    moves = q.queue
     print(f"room: {room_id}, exits: {exits}")
     print(len(visited))
     for exit_option in exits:
     # find the path to the shortest unexplored room by using 
     # a breadth-first search for a room with a `'?'` for an exit.
         if player_room_graph[room_id][exit_option] == "?":
-            moves.append(exit_option)
+            q.enqueue(exit_option)
     
     if len(moves) == 0:
         # out of unexplored/? exit options so lets go back, if possible
@@ -109,6 +110,7 @@ while len(visited) < len(world.rooms):
         # adding the inverse to our return path so we can get back
         return_path.append(opposite_directions[move])
         # move it move it
+        print(moves, "q")
         player.travel(move)
         # defining out new room
         new_room = player.current_room.id
